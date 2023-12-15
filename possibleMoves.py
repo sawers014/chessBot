@@ -25,13 +25,17 @@ def possibleMoves(board, index): #function that returns an array containing the 
     moves=[]
     piece=board[index]
         #its easier to calcuate EVERY possible move FOR every piece
-    if piece==1:
+    if piece==1:    #white pawn
         if board[index-8]==0:
-            
-            if board[index-16]==0 and index>=42 and index<=55: #a2 to h2 can move 2 squares or 1 square. but we need to check if the square is empty
+            moves.append(index-8)
+            if board[index-16]==0 and index>=48 and index<=55: #a2 to h2 can move 2 squares or 1 square. but we need to check if the square is empty
                 moves.append(index-16)
-        moves.append(index-8)
-
+          
+    elif piece==-1:     #black
+        if board[index+8]==0:
+            moves.append(index+8)  
+            if board[index+16]==0 and index>=8 and index<=15:
+                moves.append(index+16)
+        
     return moves
-
 print(possibleMoves(initialBoard, 48), "givve my number")
