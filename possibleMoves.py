@@ -1,13 +1,3 @@
-              #A   B   C  D  E   F  G    H
-initialBoard=[-5,-2.9,-3,-9,-10,-3,-2.9,-5, #8
-              -1,-1,  -1,-1, -1,-1,-1,  -1, #7
-               0, 0,   0, 0, 0,  0, 0,   0, #6
-               0, 0,   0, 0, 0,  0, 0,   0, #5
-               0, 0,   0, 0, 0,  0, 0,   0, #4
-               0, 0,   0, 0, 0,  0, 0,   0, #3
-               1, 1,   1, 1, 1,  1, 1,   1, #2
-               5, 2.9, 3, 9, 10, 3, 2.9, 5  #1
-              ]
 
 notation = {
     0: "a8", 1:"b8", 2:"c8", 3:"d8", 4:"e8", 5:"f8", 6:"g8", 7:"h8",
@@ -19,23 +9,73 @@ notation = {
     48:"a2",49:"b2",50:"c2",51:"d2",52:"e2",53:"f2",54:"g2",55:"h2",
     56:"a1",57:"b1",58:"c1",59:"d1",60:"e1",61:"f1",62:"g1",63:"h1"   
 }
+              #A   B   C  D  E   F  G    H
+initialBoard=[-5,-2.9,-3,-9,-10,-3,-2.9,-5, #8
+              -1,-1,  -1,-1, -1,-1,-1,  -1, #7
+               0, 0,   0, 0, 0,  0, 0,   0, #6
+               0, 0,   0, 0, 0,  0, 0,   0, #5
+               0, 0,   0, 0, 0,  0, 0,   0, #4
+               0, 0,   0, 0, 0,  0, 0,   0, #3
+               1, 1,   1, 1, 1,  1, 1,   1, #2
+               5, 2.9, 3, 9, 10, 3, 2.9, 5  #1
+              ]
 
-def possibleMoves(board, index): #function that returns an array containing the possible moves
-    #board is the whole board, index is the position of the piece
-    moves=[]
-    piece=board[index]
-        #its easier to calcuate EVERY possible move FOR every piece
-    if piece==1:    #white pawn
-        if board[index-8]==0:
-            moves.append(index-8)
-            if board[index-16]==0 and index>=48 and index<=55: #a2 to h2 can move 2 squares or 1 square. but we need to check if the square is empty
-                moves.append(index-16)
-          
-    elif piece==-1:     #black
-        if board[index+8]==0:
-            moves.append(index+8)  
-            if board[index+16]==0 and index>=8 and index<=15:
-                moves.append(index+16)
-        
+
+def possibleMoves(board, index):
+    moves = []
+    piece = board[index]
+
+    if piece == 1:  # White pawn
+        if board[index - 8] == 0:
+            moves.append(index - 8)
+            if board[index - 16] == 0 and index >= 48 and index <= 55:
+                moves.append(index - 16)
+
+    elif piece == -1:  # Black pawn
+        if board[index + 8] == 0:
+            moves.append(index + 8)
+            if board[index + 16] == 0 and index >= 8 and index <= 15:
+                moves.append(index + 16)
+
+    elif piece == 5 or piece ==9:  # White rook or white queen (we will only calculate linear moves in this part)
+        row, col = divmod(index, 8)
+        # Horizontal moves to the right
+        for i in range(col + 1, 8):
+            if board[row * 8 + i] <=0:
+                moves.append(row * 8 + i)
+
+                if not board[row * 8 + i] < 0: 
+                    break
+            else:
+                break
+
+        # Horizontal moves to the left
+        for i in range(col - 1, -1, -1):
+            if board[row * 8 + i] <= 0:
+                moves.append(row * 8 + i)
+                if not board[row * 8 + i] < 0: 
+                    break
+            else:
+                break
+
+        # Vertical moves upward
+        for i in range(row + 1, 8):
+            if board[i * 8 + col] <= 0:
+                moves.append(i * 8 + col)
+                if board[i * 8 + col] < 0: 
+                    break
+            else:
+                break
+
+        # Vertical moves downward
+        for i in range(row - 1, -1, -1):
+            if board[i * 8 + col] <= 0:
+                moves.append(i * 8 + col)
+                if board[i * 8 + col] < 0:
+                    break
+            else:
+                break
+
     return moves
-print(possibleMoves(initialBoard, 48), "givve my number")
+
+print(possibleMoves(initialBoard, 56), "ass")  # Example: get possible moves for the piece at index 63 (h1)
