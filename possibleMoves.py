@@ -14,7 +14,7 @@ initialBoard=[-5,-2.9,-3,-9,-10,-3,-2.9,-5, #8
               -1,-1,  -1,-1, -1,-1,-1,  -1, #7
                0, 0,   0, 0, 0,  0, 0,   0, #6
                0, 0,   0, 0, 0,  0, 0,   0, #5
-               0, 0,   0, 0, 0,  0, 0,   0, #4
+               0, 3,   0, 0, 0,  0, 0,   0, #4
                0, 0,   0, 0, 0,  0, 0,   0, #3
                1, 1,   1, 1, 1,  1, 1,   1, #2
                5, 2.9, 3, 9, 10, 3, 2.9, 5  #1
@@ -24,6 +24,7 @@ initialBoard=[-5,-2.9,-3,-9,-10,-3,-2.9,-5, #8
 def possibleMoves(board, index):
     moves = []
     piece = board[index]
+    row, col = divmod(index, 8)   #its useful to get their position in here 
 
     if piece == 1:  # White pawn
         if board[index - 8] == 0:
@@ -37,14 +38,13 @@ def possibleMoves(board, index):
             if board[index + 16] == 0 and index >= 8 and index <= 15:
                 moves.append(index + 16)
 
-    elif piece == 5 or piece ==9:  # White rook or white queen (we will only calculate linear moves in this part)
-        row, col = divmod(index, 8)
+    elif piece == 5 or piece == 9:  # White rook or white queen (linear moves)
+        
         # Horizontal moves to the right
         for i in range(col + 1, 8):
-            if board[row * 8 + i] <=0:
+            if board[row * 8 + i] <= 0:
                 moves.append(row * 8 + i)
-
-                if not board[row * 8 + i] < 0: 
+                if not board[row * 8 + i] < 0:
                     break
             else:
                 break
@@ -53,7 +53,7 @@ def possibleMoves(board, index):
         for i in range(col - 1, -1, -1):
             if board[row * 8 + i] <= 0:
                 moves.append(row * 8 + i)
-                if not board[row * 8 + i] < 0: 
+                if not board[row * 8 + i] < 0:
                     break
             else:
                 break
@@ -62,7 +62,7 @@ def possibleMoves(board, index):
         for i in range(row + 1, 8):
             if board[i * 8 + col] <= 0:
                 moves.append(i * 8 + col)
-                if board[i * 8 + col] < 0: 
+                if board[i * 8 + col] < 0:
                     break
             else:
                 break
@@ -76,6 +76,54 @@ def possibleMoves(board, index):
             else:
                 break
 
+    if piece == 3 or piece == 9:  # White bishop or white queen
+        row, col = divmod(index, 8)
+
+        # Diagonal moves to the top-right
+        i = index + 9
+        while i < 64 and i % 8 > col:  # While within the board and on the same diagonal to the top-right
+            if board[i] <= 0:  # If the square is empty or has a black piece
+                moves.append(i)  # Add the index to possible moves
+                if board[i] < 0:  # If there's a black piece, stop further moves in this direction
+                    break
+            else:
+                break
+            i += 9
+
+        # Diagonal moves to the top-left
+        i = index + 7
+        while i < 64 and i % 8 < col:  # While within the board and on the same diagonal to the top-left
+            if board[i] <= 0:  # If the square is empty or has a black piece
+                moves.append(i)  # Add the index to possible moves
+                if board[i] < 0:  # If there's a black piece, stop further moves in this direction
+                    break
+            else:
+                break
+            i += 7
+
+        # Diagonal moves to the bottom-right
+        i = index - 7
+        while i >= 0 and i % 8 > col:  # While within the board and on the same diagonal to the bottom-right
+            if board[i] <= 0:  # If the square is empty or has a black piece
+                moves.append(i)  # Add the index to possible moves
+                if board[i] < 0:  # If there's a black piece, stop further moves in this direction
+                    break
+            else:
+                break
+            i -= 7
+
+        # Diagonal moves to the bottom-left
+        i = index - 9
+        while i >= 0 and i % 8 < col:  # While within the board and on the same diagonal to the bottom-left
+            if board[i] <= 0:  # If the square is empty or has a black piece
+                moves.append(i)  # Add the index to possible moves
+                if board[i] < 0:  # If there's a black piece, stop any more moves in this direction
+                    break
+            else:
+                break
+            i -= 9
+
+
     return moves
 
-print(possibleMoves(initialBoard, 56), "ass")  # Example: get possible moves for the piece at index 63 (h1)
+print(possibleMoves(initialBoard, 33))  # Example: get possible moves for the piece at index 56 (a1)
