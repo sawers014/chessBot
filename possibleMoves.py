@@ -1,4 +1,4 @@
-
+#TODO add en passant, promotion, castle, black rook, black queen, black bishop
 notation = {
     0: "a8", 1:"b8", 2:"c8", 3:"d8", 4:"e8", 5:"f8", 6:"g8", 7:"h8",
     8: "a7",9: "b7",10:"c7",11:"d7",12:"e7",13:"f7",14:"g7",15:"h7",
@@ -27,15 +27,33 @@ def possibleMoves(board, index):
     row, col = divmod(index, 8)   #its useful to get their position in here 
 
     if piece == 1:  # White pawn
-        if board[index - 8] == 0:
+        try:
+            if board[index-7]<0: #right corner
+                moves.append(index-7)    
+        except: pass
+        try:
+            if board[index-9]<0: #left corner
+                moves.append(index-9)
+        except:pass
+
+        if board[index - 8] == 0:   #1 upper square
             moves.append(index - 8)
-            if board[index - 16] == 0 and index >= 48 and index <= 55:
+            if board[index - 16] == 0 and index >= 48 and index <= 55:  # 2 upper square
                 moves.append(index - 16)
 
     elif piece == -1:  # Black pawn
-        if board[index + 8] == 0:
+        try:
+            if board[index+7]>0: #right corner
+                moves.append(index+7)    
+        except: pass
+        try:
+            if board[index+9]>0: #left corner
+                moves.append(index+9)
+        except: pass
+
+        if board[index + 8] == 0:   #1 upper square
             moves.append(index + 8)
-            if board[index + 16] == 0 and index >= 8 and index <= 15:
+            if board[index + 16] == 0 and index >= 8 and index <= 15: #2 upper square
                 moves.append(index + 16)
 
     elif piece == 5 or piece == 9:  # White rook or white queen (linear moves)
