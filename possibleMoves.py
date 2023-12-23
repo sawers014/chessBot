@@ -1,4 +1,4 @@
-#TODO add en passant, promotion, castle, black rook, black queen, black bishop
+#TODO add en passant, promotion, castle.
 notation = {
     0: "a8", 1:"b8", 2:"c8", 3:"d8", 4:"e8", 5:"f8", 6:"g8", 7:"h8",
     8: "a7",9: "b7",10:"c7",11:"d7",12:"e7",13:"f7",14:"g7",15:"h7",
@@ -14,7 +14,7 @@ initialBoard=[-5,-2.9,-3,-9,-10,-3,-2.9,-5, #8
               -1,-1,  -1,-1, -1,-1,-1,  -1, #7
                0, 0,   0, 0, 0,  0, 0,   0, #6
                0, 0,   0, 0, 0,  0, 0,   0, #5
-               0, -3,   0, 0, 0,  0, 0,   0, #4
+               0, -2.9,   0, 0, 0,  0, 0,   0, #4
                0, 0,   0, 0, 0,  0, 0,   0, #3
                1, 1,   1, 1, 1,  1, 1,   1, #2
                5, 2.9, 3, 9, 10, 3, 2.9, 5  #1
@@ -25,7 +25,12 @@ def possibleMoves(board, index):
     moves = []
     piece = board[index]
     row, col = divmod(index, 8)   #its useful to get their position in here 
-
+    possible_moves = [   # Possible knight moves in terms of (row_change, col_change)
+            (-2, -1), (-2, 1),
+            (-1, -2), (-1, 2),
+            (1, -2), (1, 2),
+            (2, -1), (2, 1)
+        ]
     if piece == 1:  # White pawn
         try:
             if board[index-7]<0: #right corner
@@ -186,7 +191,19 @@ def possibleMoves(board, index):
             else:
                 break
             i -= 9
+    elif piece == 2.9 or piece == -2.9:
+        for move in possible_moves:  # Iterate through each possible knight move
+            new_row, new_col = row + move[0], col + move[1]  # Calculate new row and column
+            new_index = 8 * new_row + new_col  # Convert new row and column to index
+
+            # Check if the new position is within the board
+            if 0 <= new_row < 8 and 0 <= new_col < 8:
+                # Check if the square is empty or has a piece of the opposite color
+                if piece==2.9:
+                    if board[new_index] <= 0:
+                        moves.append(new_index)  # Add the index to the list of valid moves
+                else:
+                    if board[new_index] >= 0:
+                        moves.append(new_index)  # Add the index to the list of valid move 
 
     return moves
-
-print(possibleMoves(initialBoard, 33))  # Example: get possible moves for the piece at index 56 (a1)
