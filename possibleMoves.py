@@ -14,7 +14,7 @@ initialBoard=[-5,-2.9,-3,-9,-10,-3,-2.9,-5, #8
               -1,-1,  -1,-1, -1,-1,-1,  -1, #7
                0, 0,   0, 0, 0,  0, 0,   0, #6
                0, 0,   0, 0, 0,  0, 0,   0, #5
-               0, 3,   0, 0, 0,  0, 0,   0, #4
+               0, -3,   0, 0, 0,  0, 0,   0, #4
                0, 0,   0, 0, 0,  0, 0,   0, #3
                1, 1,   1, 1, 1,  1, 1,   1, #2
                5, 2.9, 3, 9, 10, 3, 2.9, 5  #1
@@ -140,7 +140,52 @@ def possibleMoves(board, index):
             else:
                 break
             i -= 9
+    if piece == -3 or piece == -9:  # Black bishop or black queen
+        row, col = divmod(index, 8)
 
+        # Diagonal moves to the top-right
+        i = index + 9
+        while i < 64 and i % 8 > col:  # While within the board and on the same diagonal to the top-right
+            if board[i] >= 0:  # If the square is empty or has a white piece
+                moves.append(i)  # Add the index to possible moves
+                if board[i] > 0:  # If there's a white piece, stop further moves in this direction
+                    break
+            else:
+                break
+            i += 9
+
+        # Diagonal moves to the top-left
+        i = index + 7
+        while i < 64 and i % 8 < col:  # While within the board and on the same diagonal to the top-left
+            if board[i] >= 0:  # If the square is empty or has a white piece
+                moves.append(i)  # Add the index to possible moves
+                if board[i] > 0:  # If there's a white piece, stop further moves in this direction
+                    break
+            else:
+                break
+            i += 7
+
+        # Diagonal moves to the bottom-right
+        i = index - 7
+        while i >= 0 and i % 8 > col:  # While within the board and on the same diagonal to the bottom-right
+            if board[i] >= 0:  # If the square is empty or has a white piece
+                moves.append(i)  # Add the index to possible moves
+                if board[i] > 0:  # If there's a white piece, stop further moves in this direction
+                    break
+            else:
+                break
+            i -= 7
+
+        # Diagonal moves to the bottom-left
+        i = index - 9
+        while i >= 0 and i % 8 < col:  # While within the board and on the same diagonal to the bottom-left
+            if board[i] >= 0:  # If the square is empty or has a white piece
+                moves.append(i)  # Add the index to possible moves
+                if board[i] > 0:  # If there's a white piece, stop any more moves in this direction
+                    break
+            else:
+                break
+            i -= 9
 
     return moves
 
