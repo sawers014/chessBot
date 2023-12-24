@@ -23,6 +23,8 @@ TODO:
 -not fixed values based on the position(a knight in the center should be valued more than a knight in the corner);
 -actually evaluate.
 """
+from possibleMoves import *     #import other functions
+
 notation = {
     0: "a8", 1:"b8", 2:"c8", 3:"d8", 4:"e8", 5:"f8", 6:"g8", 7:"h8",
     8: "a7",9: "b7",10:"c7",11:"d7",12:"e7",13:"f7",14:"g7",15:"h7",
@@ -36,16 +38,22 @@ notation = {
 def evaluate(board):
     x=0
     for z in range(len(board)):#its useful to cycle by index
-        y=board[z]  #its better to do, so we can understand where the piece is.
+        y=board[z]  #its better to do, so we can understand what piece we are calculating.
+
+        pos = possibleMoves(board, z)  # pos, is a variable that contain the arrays of possible moves of a piece
         if y==2.9 or y==-2.9:
             position=notation[z] #localize Where a piece is
             if position[0]=="c"  or position[0]=="d" or position[0]=="e" or position[0]=="f":
                 y*=1.1 #a knight should be valued more because it is in a central position
                        #we use the multiplication because we dont know if the knight is white or black
-
-        x=round(x, 1) + y   #need to do this because we cant work with int because it is easier to evaluate some piece with 
+        elif y==3:
+            y=3+ (0.1 * len(pos) )  # we do this so that if a bishop is more active (controls more square) it is valued more than an unactive bishop
+            
+        elif y==-3:
+            y=-3 - (0.1 * len(pos) )
+        x=round(x, 1) + y   #we need to do this because we cant work with int because it is easier to evaluate some piece with 
                             #decimals based on their position on the board
-        print("for now x is equal to ", x)
+        
     return x
 
               #A   B   C  D  E   F  G    H
@@ -58,5 +66,3 @@ initialBoard=[-5,-2.9,-3,-9,-10,-3,-2.9,-5, #8
                1, 1,   1, 1, 1,  1, 1,   1, #2
                5, 2.9, 3, 9, 10, 3, 2.9, 5  #1
               ]
-
-print("should return a -1, but we get ", evaluate(initialBoard))
