@@ -35,25 +35,34 @@ notation = {
     48:"a2",49:"b2",50:"c2",51:"d2",52:"e2",53:"f2",54:"g2",55:"h2",
     56:"a1",57:"b1",58:"c1",59:"d1",60:"e1",61:"f1",62:"g1",63:"h1"   
 }
-def evaluate(board):
-    x=0
-    for z in range(len(board)):#its useful to cycle by index
-        y=board[z]  #its better to do, so we can understand what piece we are calculating.
 
-        pos = possibleMoves(board, z)  # pos, is a variable that contain the arrays of possible moves of a piece
-        if y==2.9 or y==-2.9:
-            position=notation[z] #localize Where a piece is
-            if position[0]=="c"  or position[0]=="d" or position[0]=="e" or position[0]=="f":
-                y*=1.1 #a knight should be valued more because it is in a central position
-                       #we use the multiplication because we dont know if the knight is white or black
-        elif y==3:
-            y=3+ (0.1 * len(pos) )  # we do this so that if a bishop is more active (controls more square) it is valued more than an unactive bishop
-            
-        elif y==-3:
-            y=-3 - (0.1 * len(pos) )
-        x=round(x, 1) + y   #we need to do this because we cant work with int because it is easier to evaluate some piece with 
-                            #decimals based on their position on the board
+
+def evaluate(board):
+    x = 0
+    for z in range(len(board)):  # its useful to cycle by index
+        # its better to do, so we can understand what piece we are calculating.
+        y = board[z]
+
+        # pos, is a variable that contain the arrays of possible moves of a piece
+        pos = possibleMoves(board, z)
+
+        # white/black knight 
+        if y == 2.9 or y == -2.9:
+            position = notation[z]  # localize Where a piece is
+            if position[0] == "c" or position[0] == "d" or position[0] == "e" or position[0] == "f":
+                # a knight should be valued more because it is in a central position
+                # we use the multiplication because we dont know if the knight is white or black
+                y *= 1.1  
         
+        # white/black bishop
+        elif y == 3 or y == -3:
+            # we do this so that if a bishop is more active (controls more square) it is valued more than an unactive bishop
+            y = y + (0.1 * len(pos))
+        
+        # we need to do this because we cant work with int because it is easier to evaluate some piece with
+        # decimals based on their position on the board
+        x = round(x, 1) + y
+
     return x
 
               #A   B   C  D  E   F  G    H

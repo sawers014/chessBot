@@ -44,18 +44,26 @@ notation = {
     48:"a2",49:"b2",50:"c2",51:"d2",52:"e2",53:"f2",54:"g2",55:"h2",
     56:"a1",57:"b1",58:"c1",59:"d1",60:"e1",61:"f1",62:"g1",63:"h1"   
 }
+
+
 def movePiece(start, end):
-    start=list(notation.keys())[list(notation.values()).index(start)]   #we use this to get the array index from the notation (e4 =>> 36)
-    end=list(notation.keys())[list(notation.values()).index(end)]
-    initialBoard[end]=initialBoard[start]   #we put the value(the piece) of the start in the square we have chosen
-    initialBoard[start]=0   # and then we put an empty square where we started
+    # we use this to get the array index from the notation (e4 =>> 36)
+    start = list(notation.keys())[list(notation.values()).index(start)]
+    end = list(notation.keys())[list(notation.values()).index(end)]
     
+    # we put the value(the piece) of the start in the square we have chosen
+    initialBoard[end] = initialBoard[start]
+    
+    # and then we put an empty square where we started
+    initialBoard[start] = 0
+
 
 while True:
+    # we will change the board during the execution but we'll use the same array to save memory
+    printBoard(initialBoard)
 
-    printBoard(initialBoard)    #we will change the board during the execution but we'll use the same array to save memory
-    
-    selected=input("\nSelect the square of a piece you are willing to move (only legal moves) ")  #variables that stores the position of a piece
-    moveTo=input("Enter where you want your piece to be placed ")
+    # variables that stores the position of a piece
+    selected = input("\nSelect the square of a piece you are willing to move (only legal moves) ")
+    moveTo = input("Enter where you want your piece to be placed ")
     movePiece(selected, moveTo)
-    #add condition on endind the loop upon winning/losing/ making a tie
+    # add condition on endind the loop upon winning/losing/ making a tie
