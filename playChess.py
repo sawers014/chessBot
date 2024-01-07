@@ -21,7 +21,7 @@ TODO:
 -add ability to promote.
 -add a control to end the game
 """
-from print_board import *
+from printBoard import *
 
               #A   B   C  D  E   F  G    H
 initialBoard=[-5,-2.9,-3,-9,-10,-3,-2.9,-5, #8
