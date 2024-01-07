@@ -54,10 +54,14 @@ def evaluate(board):
                 # we use the multiplication because we dont know if the knight is white or black
                 y *= 1.1  
         
-        # white/black bishop
-        elif y == 3 or y == -3:
+        # white bishop
+        elif y == 3:
             # we do this so that if a bishop is more active (controls more square) it is valued more than an unactive bishop
-            y = y + (0.1 * len(pos))
+            y = 3 + (0.1 * len(pos))
+       
+        # black bishop
+        elif y == -3:
+            y = -3 - (0.1 * len(pos))
         
         # we need to do this because we cant work with int because it is easier to evaluate some piece with
         # decimals based on their position on the board
