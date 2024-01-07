@@ -13,6 +13,16 @@
 10 represent THE white king
 -10 represent THE black king
 """
+"""
+TODO:
+-add ability to move;
+-add ability to castle;
+-add ability to ENPASSANT;
+-add ability to promote.
+-add a control to end the game
+"""
+from print_board import *
+
               #A   B   C  D  E   F  G    H
 initialBoard=[-5,-2.9,-3,-9,-10,-3,-2.9,-5, #8
               -1,-1,  -1,-1, -1,-1,-1,  -1, #7
@@ -34,3 +44,18 @@ notation = {
     48:"a2",49:"b2",50:"c2",51:"d2",52:"e2",53:"f2",54:"g2",55:"h2",
     56:"a1",57:"b1",58:"c1",59:"d1",60:"e1",61:"f1",62:"g1",63:"h1"   
 }
+def movePiece(start, end):
+    start=list(notation.keys())[list(notation.values()).index(start)]   #we use this to get the array index from the notation (e4 =>> 36)
+    end=list(notation.keys())[list(notation.values()).index(end)]
+    initialBoard[end]=initialBoard[start]   #we put the value(the piece) of the start in the square we have chosen
+    initialBoard[start]=0   # and then we put an empty square where we started
+    
+
+while True:
+
+    printBoard(initialBoard)    #we will change the board during the execution but we'll use the same array to save memory
+    
+    selected=input("\nSelect the square of a piece you are willing to move (only legal moves) ")  #variables that stores the position of a piece
+    moveTo=input("Enter where you want your piece to be placed ")
+    movePiece(selected, moveTo)
+    #add condition on endind the loop upon winning/losing/ making a tie
