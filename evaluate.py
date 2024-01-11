@@ -20,7 +20,6 @@ TODO:
 -ability to create treats;
 -function to see checkmate in 1;
 -ability to try and avoid pins;
--not fixed values based on the position(a knight in the center should be valued more than a knight in the corner);
 -actually evaluate.
 """
 from possibleMoves import *     #import other functions
@@ -54,28 +53,36 @@ def evaluate(board):
                 # we use the multiplication because we dont know if the knight is white or black
                 y *= 1.1  
         
-        # white bishop
-        elif y == 3:
-            # we do this so that if a bishop is more active (controls more square) it is valued more than an unactive bishop
-            y = 3 + (0.1 * len(pos))
+        # white bishop, rook, queen
+        elif y == 3 or y==5 or y==9:
+            # we do this so that if the piece is more active (controls more square) it is valued more than an unactive piece
+            y +=  (0.1 * len(pos))  # we add the possible moves of that piece
        
-        # black bishop
-        elif y == -3:
-            y = -3 - (0.1 * len(pos))
+        # black bishop, rook, queen
+        elif y == -3 or y==-5 or y==-9:
+            y -=  (0.1 * len(pos))
         
+        elif y == 1:  # White pawn
+            if z % 8 != 0:  # Check if not on the left edge
+                if z - 9 >= 0 and board[z - 9] == 1:
+                    y += 0.1  #pawn chain
+                    
+            if (z + 1) % 8 != 0:  # Check if not on the right edge
+                if z - 7 >= 0 and board[z - 7] == 1:
+                    y += 0.1
+
+        elif y == -1:  # Black pawn
+            if z % 8 != 0:  # Check if not on the left edge
+                if z + 7 < 64 and board[z + 7] == -1:
+                    y -= 0.1   
+                    
+
+            if (z + 1) % 8 != 0:  # Check if not on the right edge
+                if z + 9 < 64 and board[z + 9] == -1:
+                    y -= 0.1
+
         # we need to do this because we cant work with int because it is easier to evaluate some piece with
         # decimals based on their position on the board
         x = round(x, 1) + y
 
     return x
-
-              #A   B   C  D  E   F  G    H
-initialBoard=[-5,-2.9,-3,-9,-10,-3,-2.9,-5, #8
-              -1,-1,  -1,-1, -1,-1,-1,  -1, #7
-               0, 0,   0, 0, 0,  0, 0,   0, #6
-               0, 0,   0, 0, 0,  0, 0,   0, #5
-               0, 0,   0, 0, 0,  0, 0,   0, #4
-               0, 0,   0, 0, 0,  0, 0,   0, #3
-               1, 1,   1, 1, 1,  1, 1,   1, #2
-               5, 2.9, 3, 9, 10, 3, 2.9, 5  #1
-              ]
