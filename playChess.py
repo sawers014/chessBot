@@ -22,7 +22,7 @@ TODO:
 -add a control to end the game
 """
 from printBoard import *
-
+from evaluate import *
               #A   B   C  D  E   F  G    H
 initialBoard=[-5,-2.9,-3,-9,-10,-3,-2.9,-5, #8
               -1,-1,  -1,-1, -1,-1,-1,  -1, #7
@@ -66,4 +66,5 @@ while True:
     selected = input("\nSelect the square of a piece you are willing to move (only legal moves) ")
     moveTo = input("Enter where you want your piece to be placed ")
     movePiece(selected, moveTo)
+    print("Now we have an evaluation of ", evaluate(initialBoard) )
     # add condition on endind the loop upon winning/losing/ making a tie
