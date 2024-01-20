@@ -22,18 +22,18 @@ def printBoard(board):  # this function prints a chessboard given as input
         for b in range(8):
             switch = {
                 0: ' ',
-                1: '♟︎',
-                -1: '♙',
-                3: '♝',
-                -3: '♗',
-                2.9: '♞',
-                -2.9: '♘',
-                5: '♜',
-                -5: '♖',
-                9: '♛',
-                -9: '♕',
-                10: '♚',
-                -10: '♔'
+                -1: '♟︎',
+                1: '♙',
+                -3: '♝',
+                3: '♗',
+                -2.9: '♞',
+                2.9: '♘',
+                -5: '♜',
+                5: '♖',
+                -9: '♛',
+                9: '♕',
+                -10: '♚',
+                10: '♔'
             }
 
             # print the piece with a subdivision
