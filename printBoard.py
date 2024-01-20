@@ -17,11 +17,11 @@
 
 def printBoard(board):  # this function prints a chessboard given as input
     index = 0
-    for _ in range(8):
+    for a in range(8):
         print("\n")
-        for _ in range(8):
+        for b in range(8):
             switch = {
-                0: 'X',
+                0: ' ',
                 1: '♟︎',
                 -1: '♙',
                 3: '♝',
@@ -37,7 +37,13 @@ def printBoard(board):  # this function prints a chessboard given as input
             }
 
             # print the piece with a subdivision
-            print("|", switch.get(board[index], "Invalid input"), " ", end="")
+            if (a + b) % 2 == 1:
+                print("| \033[42;30m ", end="")
+            else:
+                print("| \033[30;47m ", end="")
+            
+            print(switch.get(board[index], "Invalid input"), "\033[49;0m ", end="")
+
             index += 1  # increase the index
 
               #A   B   C  D  E   F  G    H
