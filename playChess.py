@@ -59,7 +59,7 @@ def movePiece(chessBoard, start, end):
     chessBoard[start] = 0
 
 def bestMove(chessBoard):
-    best_score = float('-inf')  # Initialize to negative infinity
+    best_score = float('+inf')  # Initialize to negative infinity
     best_move = None
 
     for i in range(len(chessBoard)):
@@ -70,7 +70,7 @@ def bestMove(chessBoard):
                 movePiece(temp_board, notation[i], notation[move])
                 score = evaluate(temp_board, False)
 
-                if score > best_score:
+                if score < best_score:
                     best_score = score
                     best_move = (notation[i], notation[move])
 
