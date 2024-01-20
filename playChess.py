@@ -46,25 +46,53 @@ notation = {
 }
 
 
-def movePiece(start, end):
+
+def movePiece(chessBoard, start, end):
     # we use this to get the array index from the notation (e4 =>> 36)
     start = list(notation.keys())[list(notation.values()).index(start)]
     end = list(notation.keys())[list(notation.values()).index(end)]
     
     # we put the value(the piece) of the start in the square we have chosen
-    initialBoard[end] = initialBoard[start]
+    chessBoard[end] = chessBoard[start]
     
     # and then we put an empty square where we started
-    initialBoard[start] = 0
+    chessBoard[start] = 0
+
+def bestMove(chessBoard):
+    best_score = float('+inf')  # Initialize to negative infinity
+    best_move = None
+
+    for i in range(len(chessBoard)):
+        if chessBoard[i] < 0:  # Check for black pieces
+            piece_moves = possibleMoves(chessBoard, i)
+            for move in piece_moves:
+                temp_board = chessBoard.copy()
+                movePiece(temp_board, notation[i], notation[move])
+                score = evaluate(temp_board, False)
+
+                if score < best_score:
+                    best_score = score
+                    best_move = (notation[i], notation[move])
+
+    return best_move
 
 
 while True:
     # we will change the board during the execution but we'll use the same array to save memory
     printBoard(initialBoard)
 
-    # variables that stores the position of a piece
+    # variables that store the position of a piece
     selected = input("\nSelect the square of a piece you are willing to move (only legal moves) ")
     moveTo = input("Enter where you want your piece to be placed ")
-    movePiece(selected, moveTo)
-    print("Now we have an evaluation of ", evaluate(initialBoard) )
-    # add condition on endind the loop upon winning/losing/ making a tie
+    movePiece(initialBoard, selected, moveTo)
+    print("Now we have an evaluation of ", evaluate(initialBoard, True))
+
+    # Black move
+    best_move = bestMove(initialBoard)
+    if best_move:
+        print("Best move for Black:", best_move)
+        movePiece(initialBoard, best_move[0], best_move[1])
+        print("Now we have an evaluation of ", evaluate(initialBoard, False))
+    else:
+        print("No legal moves for Black. Game over.")
+        break  # or add an appropriate exit condition
