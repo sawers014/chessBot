@@ -35,20 +35,43 @@ notation = {
     56:"a1",57:"b1",58:"c1",59:"d1",60:"e1",61:"f1",62:"g1",63:"h1"   
 }
 
+def isKingChecked(board, index):
+    #board is the chessboard, index represent the index of the king
+    moves=[]
+    # array that will contain all the index of the possible moves of the opposing color,
+    # if the king index IS in this array, then the king is indeed in check 
+    
+
+    #black king in check?
+    if board[index]<0:
+        for x in range(64):#cycle through the index of the array
+
+            if board[x]>0: #we only want opposing color pieces.
+                moves.append(possibleMoves(board, x))
+
+        #white king
+        pass
+    else:
+        pass
+
+    if any(index in sublist for sublist in moves):
+        return True
+        
+
 
 def evaluate(board, turn):  
     # board is the chessboard, turn is a variable that is either True(White) or False(Black)
     x = 0
-    for z in range(len(board)):  # its useful to cycle by index
+    for index in range(len(board)):  # its useful to cycle by index
         # its better to do, so we can understand what piece we are calculating.
-        piece_value = board[z]
+        piece_value = board[index]
 
         # pos, is a variable that contain the arrays of possible moves of a piece
-        pos = possibleMoves(board, z)
+        pos = possibleMoves(board, index)
 
         # white/black knight 
         if piece_value == 2.9 or piece_value == -2.9:
-            position = notation[z]  # localize Where a piece is
+            position = notation[index]  # localize Where a piece is
             if position[0] == "c" or position[0] == "d" or position[0] == "e" or position[0] == "f":
                 # a knight should be valued more because it is in a central position
                 # we use the multiplication because we dont know if the knight is white or black
@@ -64,29 +87,30 @@ def evaluate(board, turn):
             piece_value -=  (0.1 * len(pos))
         
         elif piece_value == 1:  # White pawn
-            if z % 8 != 0:  # Check if not on the left edge
-                if z - 9 >= 0 and board[z - 9] == 1:
+            if index % 8 != 0:  # Check if not on the left edge
+                if index - 9 >= 0 and board[index - 9] == 1:
                     piece_value += 0.1  #pawn chain
                     
-            if (z + 1) % 8 != 0:  # Check if not on the right edge
-                if z - 7 >= 0 and board[z - 7] == 1:
+            if (index + 1) % 8 != 0:  # Check if not on the right edge
+                if index - 7 >= 0 and board[index - 7] == 1:
                     piece_value += 0.1
 
         elif piece_value == -1:  # Black pawn
-            if z % 8 != 0:  # Check if not on the left edge
-                if z + 7 < 64 and board[z + 7] == -1:
+            if index % 8 != 0:  # Check if not on the left edge
+                if index + 7 < 64 and board[index + 7] == -1:
                     piece_value -= 0.1   
                     
 
-            if (z + 1) % 8 != 0:  # Check if not on the right edge
-                if z + 9 < 64 and board[z + 9] == -1:
+            if (index + 1) % 8 != 0:  # Check if not on the right edge
+                if index + 9 < 64 and board[index + 9] == -1:
                     piece_value -= 0.1
 
         # white king
         if piece_value==10:
-            pass
+           pass
         elif piece_value==-10:  # black king
-            pass
+            if isKingChecked(board, index):
+                piece_value+=1
 
         # we need to do this because we cant work with int because it is easier to evaluate some piece with
         # decimals based on their position on the board
@@ -104,3 +128,5 @@ initialBoard=[-5,-2.9,-3,-9,-10,-3,-2.9,-5, #8
                1, 1,   1, 1, 1,  1, 1,   1, #2
                5, 2.9, 3, 9, 10, 3, 2.9, 5  #1
               ]
+
+print(evaluate(initialBoard, False))
