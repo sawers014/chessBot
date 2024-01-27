@@ -50,8 +50,11 @@ def isKingChecked(board, index):
                 moves.append(possibleMoves(board, x))
 
         #white king
-        pass
     else:
+        for x in range(64):#cycle through the index of the array
+
+            if board[x]<0: #we only want opposing color pieces.
+                moves.append(possibleMoves(board, x))
         pass
 
     if any(index in sublist for sublist in moves):
