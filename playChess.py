@@ -15,7 +15,6 @@
 """
 """
 TODO:
--add ability to move;
 -add ability to castle;
 -add ability to ENPASSANT;
 -add ability to promote.
@@ -59,23 +58,38 @@ def movePiece(chessBoard, start, end):
     chessBoard[start] = 0
 
 def bestMove(chessBoard):
-    best_score = float('+inf')  # Initialize to negative infinity
+    best_score = float('+inf')  
     best_move = None
 
     for i in range(len(chessBoard)):
         if chessBoard[i] < 0:  # Check for black pieces
             piece_moves = possibleMoves(chessBoard, i)
             for move in piece_moves:
-                temp_board = chessBoard.copy()
-                movePiece(temp_board, notation[i], notation[move])
-                score = evaluate(temp_board, False)
+                temp_board_black = chessBoard.copy()
+                movePiece(temp_board_black, notation[i], notation[move])
+                
+                # Simulate best white response
+                best_white_score = float('-inf')
+
+                for j in range(len(temp_board_black)):
+                    if temp_board_black[j] > 0:  # Check for white pieces
+                        white_piece_moves = possibleMoves(temp_board_black, j)
+                        for white_move in white_piece_moves:
+                            temp_board_white = temp_board_black.copy()
+                            movePiece(temp_board_white, notation[j], notation[white_move])
+                            white_score = evaluate(temp_board_white, True)
+
+                            if white_score > best_white_score:
+                                best_white_score = white_score
+
+                # Evaluate the score for the current black move
+                score = evaluate(temp_board_black, False) + best_white_score
 
                 if score < best_score:
                     best_score = score
                     best_move = (notation[i], notation[move])
 
     return best_move
-
 
 while True:
     # we will change the board during the execution but we'll use the same array to save memory
