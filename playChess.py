@@ -98,7 +98,7 @@ while True:
     # variables that store the position of a piece
     selected = input("\nSelect the square of a piece you are willing to move (only legal moves) ")
     moveTo = input("Enter where you want your piece to be placed ")
-    movePiece(initialBoard, selected, moveTo)
+    movePiece(initialBoard, selected.lower(), moveTo.lower())
     print("Now we have an evaluation of ", evaluate(initialBoard, True))
 
     # Black move
