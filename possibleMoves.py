@@ -14,12 +14,12 @@ initialBoard=[-5,-2.9,-3,-9,-10,-3,-2.9,-5, #8
               -1,-1,  -1,-1, -1,-1,-1,  -1, #7
                0, 0,   0, 0, 0,  0, 0,   0, #6
                0, 0,   0, 0, 0,  0, 0,   0, #5
-               0, -2.9,   0, 0, 0,  0, 0,   0, #4
+               0, 0,   0, 0, 0,  0, 0,   0, #4
                0, 0,   0, 0, 0,  0, 0,   0, #3
                1, 1,   1, 1, 1,  1, 1,   1, #2
                5, 2.9, 3, 9, 10, 3, 2.9, 5  #1
               ]
-
+from possibleMoves import * #we need to import the "is in check feature"
 
 def possibleMoves(board, index):
     moves = []
@@ -31,7 +31,28 @@ def possibleMoves(board, index):
             (1, -2), (1, 2),
             (2, -1), (2, 1)
         ]
-    if piece == 1:  # White pawn
+    king_moves=[    #possible kings moves
+        (-1, 1), (0, 1), (1, 1),
+        (-1, 0),         (1, 0),
+        (-1, -1),(0, -1),(1,-1)
+    ]
+
+    if piece == 10 or piece == -10:
+        for move in king_moves:  # Iterate through each possible knight move
+            new_r, new_c = row + move[0], col + move[1]  # Calculate new row and column
+            new_i = 8 * new_r + new_c  # Convert new row and column to index
+
+            # Check if the new position is within the board
+            if 0 <= new_r < 8 and 0 <= new_c < 8:
+                # Check if the square is empty or has a piece of the opposite color
+                if piece==10:
+                    if board[new_i] <= 0:
+                        moves.append(new_i)  # Add the index to the list of valid moves
+                else:
+                    
+                    if board[new_i] >= 0:
+                        moves.append(new_i)  # Add the index to the list of valid move 
+    elif piece == 1:  # White pawn
         try:
             if board[index-7]<0: #right corner
                 moves.append(index-7)    
