@@ -44,6 +44,10 @@ notation = {
     56:"a1",57:"b1",58:"c1",59:"d1",60:"e1",61:"f1",62:"g1",63:"h1"   
 }
 
+def is_king_in_check_after_move(chessBoard, start, end):
+    temp_board = chessBoard.copy()
+    movePiece(temp_board, notation[start], notation[end])
+    return isKingChecked(temp_board, end)
 
 
 def movePiece(chessBoard, start, end):
@@ -57,13 +61,18 @@ def movePiece(chessBoard, start, end):
     # and then we put an empty square where we started
     chessBoard[start] = 0
 
+
 def bestMove(chessBoard):
     best_score = float('+inf')  
     best_move = None
+    king_index=chessBoard.index(-10)    #its useful to save the black king index
 
     for i in range(len(chessBoard)):
         if chessBoard[i] < 0:  # Check for black pieces
             piece_moves = possibleMoves(chessBoard, i)
+
+            
+
             for move in piece_moves:
                 temp_board_black = chessBoard.copy()
                 movePiece(temp_board_black, notation[i], notation[move])
