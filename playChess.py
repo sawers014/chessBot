@@ -72,32 +72,37 @@ def bestMove(chessBoard):
             piece_moves = possibleMoves(chessBoard, i)
 
             
+            if not isKingChecked(chessBoard, king_index):#if the black king is not in check we just want the best move
+                for move in piece_moves:
+                    temp_board_black = chessBoard.copy()
+                    movePiece(temp_board_black, notation[i], notation[move])
+                    
+                    # Simulate best white response
+                    best_white_score = float('-inf')
 
-            for move in piece_moves:
-                temp_board_black = chessBoard.copy()
-                movePiece(temp_board_black, notation[i], notation[move])
-                
-                # Simulate best white response
-                best_white_score = float('-inf')
+                    for j in range(len(temp_board_black)):
+                        if temp_board_black[j] > 0:  # Check for white pieces
+                            white_piece_moves = possibleMoves(temp_board_black, j)
+                            for white_move in white_piece_moves:
+                                temp_board_white = temp_board_black.copy()
+                                movePiece(temp_board_white, notation[j], notation[white_move])
+                                white_score = evaluate(temp_board_white, True)
 
-                for j in range(len(temp_board_black)):
-                    if temp_board_black[j] > 0:  # Check for white pieces
-                        white_piece_moves = possibleMoves(temp_board_black, j)
-                        for white_move in white_piece_moves:
-                            temp_board_white = temp_board_black.copy()
-                            movePiece(temp_board_white, notation[j], notation[white_move])
-                            white_score = evaluate(temp_board_white, True)
+                                if white_score > best_white_score:
+                                    best_white_score = white_score
 
-                            if white_score > best_white_score:
-                                best_white_score = white_score
+                    # Evaluate the score for the current black move
+                    score = evaluate(temp_board_black, False) + best_white_score
 
-                # Evaluate the score for the current black move
-                score = evaluate(temp_board_black, False) + best_white_score
-
-                if score < best_score:
-                    best_score = score
-                    best_move = (notation[i], notation[move])
-
+                    if score < best_score:
+                        best_score = score
+                        best_move = (notation[i], notation[move])
+            else:
+                while(isKingChecked(chessBoard, king_index)):
+                    #try to cover the check
+                    pass
+                #if not able to cover the check, break because game is lost
+                pass
     return best_move
 
 while True:
@@ -105,9 +110,15 @@ while True:
     printBoard(initialBoard)
 
     # variables that store the position of a piece
-    selected = input("\nSelect the square of a piece you are willing to move (only legal moves) ")
-    moveTo = input("Enter where you want your piece to be placed ")
-    movePiece(initialBoard, selected.lower(), moveTo.lower())
+    selected = input("\nSelect the square of a piece you are willing to move (only legal moves) ").lower()
+
+    print("you can move to : " )
+    mvs=possibleMoves(initialBoard, list(notation.keys())[list(notation.values()).index(selected)]) #list of possible moves for given piece location
+    for y in mvs:
+        print(notation[y], " " )
+
+    moveTo = input("Enter where you want your piece to be placed ").lower()
+    movePiece(initialBoard, selected, moveTo)
     print("Now we have an evaluation of ", evaluate(initialBoard, True))
 
     # Black move
