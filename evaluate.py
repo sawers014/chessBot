@@ -15,12 +15,9 @@
 """
 """
 TODO:
--use colored ASCII;
--function to see if the king is on check;
 -ability to create treats;
 -function to see checkmate in 1;
 -ability to try and avoid pins;
--actually evaluate.
 """
 from possibleMoves import *     #import other functions
 
@@ -83,11 +80,11 @@ def evaluate(board, turn):
         # white bishop, rook, queen
         elif piece_value == 3 or piece_value==5 or piece_value==9:
             # we do this so that if the piece is more active (controls more square) it is valued more than an unactive piece
-            piece_value +=  (0.1 * len(pos))  # we add the possible moves of that piece
+            piece_value +=  (0.05 * len(pos))  # we add the possible moves of that piece
        
         # black bishop, rook, queen
         elif piece_value == -3 or piece_value==-5 or piece_value==-9:
-            piece_value -=  (0.1 * len(pos))
+            piece_value -=  (0.05 * len(pos))
         
         elif piece_value == 1:  # White pawn
             if index % 8 != 0:  # Check if not on the left edge
