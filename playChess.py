@@ -18,7 +18,7 @@ TODO:
 -add ability to castle;
 -add ability to ENPASSANT;
 -add ability to promote.
--add a control to end the game
+
 """
 from printBoard import *
 from evaluate import *
@@ -67,46 +67,49 @@ def bestMove(chessBoard):
     best_move = None
     king_index=chessBoard.index(-10)    #its useful to save the black king index
 
+
+    #if the black king is not in check we just want the best move
     for i in range(len(chessBoard)):
+
         if chessBoard[i] < 0:  # Check for black pieces
             piece_moves = possibleMoves(chessBoard, i)
 
-            
-            if not isKingChecked(chessBoard, king_index):#if the black king is not in check we just want the best move
-                for move in piece_moves:
-                    temp_board_black = chessBoard.copy()
-                    movePiece(temp_board_black, notation[i], notation[move])
-                    #check if moving that piece the black king is in check
-                    if not isKingChecked(temp_board_black, temp_board_black.index(-10)):
-                        continue    #we skip this move because it will put the black king in check 
-                                    #(before the move, the king was safe)
-                    
-                    # Simulate best white response
-                    best_white_score = float('-inf')
+            for move in piece_moves:
+                temp_board_black = chessBoard.copy()
+                movePiece(temp_board_black, notation[i], notation[move])
+                #check if after moving that piece the black king is in check
+                if isKingChecked(temp_board_black, temp_board_black.index(-10)):
+                    print("u suck")
+                    continue    #we skip this move because the black king is in check 
+                                
+                # Simulate best white response
+                best_white_score = float('-inf')
 
-                    for j in range(len(temp_board_black)):
-                        if temp_board_black[j] > 0:  # Check for white pieces
-                            white_piece_moves = possibleMoves(temp_board_black, j)
-                            for white_move in white_piece_moves:
-                                temp_board_white = temp_board_black.copy()
-                                movePiece(temp_board_white, notation[j], notation[white_move])
-                                white_score = evaluate(temp_board_white, True)
+                for j in range(len(temp_board_black)):
+                    if temp_board_black[j] > 0:  # Check for white pieces
+                        white_piece_moves = possibleMoves(temp_board_black, j)
+                        for white_move in white_piece_moves:        
+                            #need to add a control on checks also for white
+                            temp_board_white = temp_board_black.copy()
+                            movePiece(temp_board_white, notation[j], notation[white_move])
 
-                                if white_score > best_white_score:
-                                    best_white_score = white_score
+                            if isKingChecked(temp_board_white, temp_board_black.index(10)):
+                                continue    #we skip this move because the white king is in check 
+                 
+                            white_score = evaluate(temp_board_white, True)
 
-                    # Evaluate the score for the current black move
-                    score = evaluate(temp_board_black, False) + best_white_score
+                            if white_score > best_white_score:
+                                best_white_score = white_score
 
-                    if score < best_score:
-                        best_score = score
-                        best_move = (notation[i], notation[move])
-            else:
-                while(isKingChecked(chessBoard, king_index)):
-                    #try to cover the check
-                    pass
-                #if not able to cover the check, break because game is lost
-                pass
+                # Evaluate the score for the current black move
+                score = evaluate(temp_board_black, False) + best_white_score
+
+                if score < best_score:
+                    best_score = score
+                    best_move = (notation[i], notation[move])
+
+    if best_move==None: 
+        print("game is lost for black, checkmate")
     return best_move
 
 while True:
@@ -130,7 +133,7 @@ while True:
     if best_move:
         print("Best move for Black:", best_move)
         movePiece(initialBoard, best_move[0], best_move[1])
-        print("Now we have an evaluation of ", evaluate(initialBoard, False))
+        print("After black's move the evaluation is ", evaluate(initialBoard, False))
     else:
         print("No legal moves for Black. Game over.")
         break  # or add an appropriate exit condition
