@@ -76,6 +76,10 @@ def bestMove(chessBoard):
                 for move in piece_moves:
                     temp_board_black = chessBoard.copy()
                     movePiece(temp_board_black, notation[i], notation[move])
+                    #check if moving that piece the black king is in check
+                    if not isKingChecked(temp_board_black, temp_board_black.index(-10)):
+                        continue    #we skip this move because it will put the black king in check 
+                                    #(before the move, the king was safe)
                     
                     # Simulate best white response
                     best_white_score = float('-inf')
