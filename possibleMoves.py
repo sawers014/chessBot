@@ -1,4 +1,5 @@
 #TODO add en passant, promotion, castle.
+#fix white rook
 notation = {
     0: "a8", 1:"b8", 2:"c8", 3:"d8", 4:"e8", 5:"f8", 6:"g8", 7:"h8",
     8: "a7",9: "b7",10:"c7",11:"d7",12:"e7",13:"f7",14:"g7",15:"h7",
@@ -88,7 +89,7 @@ def possibleMoves(board, index):
         for i in range(col + 1, 8):
             if board[row * 8 + i] <= 0:
                 moves.append(row * 8 + i)
-                if not board[row * 8 + i] < 0:
+                if  board[row * 8 + i] < 0:
                     break
             else:
                 break
@@ -97,7 +98,7 @@ def possibleMoves(board, index):
         for i in range(col - 1, -1, -1):
             if board[row * 8 + i] <= 0:
                 moves.append(row * 8 + i)
-                if not board[row * 8 + i] < 0:
+                if  board[row * 8 + i] < 0:
                     break
             else:
                 break
@@ -119,6 +120,48 @@ def possibleMoves(board, index):
                     break
             else:
                 break
+    
+                
+    elif piece == -5 or piece == -9:  # black rook or black queen (linear moves)
+        
+        # Horizontal moves to the right
+        for i in range(col + 1, 8):
+            if board[row * 8 + i] >= 0:
+                moves.append(row * 8 + i)
+                if  board[row * 8 + i] > 0:
+                    break
+            else:
+                break
+
+        # Horizontal moves to the left
+        for i in range(col - 1, -1, -1):
+            if board[row * 8 + i] >= 0:
+                moves.append(row * 8 + i)
+                if  board[row * 8 + i] > 0:
+                    break
+            else:
+                break
+
+        # Vertical moves upward
+        for i in range(row + 1, 8):
+            if board[i * 8 + col] >= 0:
+                moves.append(i * 8 + col)
+                if board[i * 8 + col] > 0:
+                    break
+            else:
+                break
+
+        # Vertical moves downward
+        for i in range(row - 1, -1, -1):
+            if board[i * 8 + col] >= 0:
+                moves.append(i * 8 + col)
+                if board[i * 8 + col] > 0:
+                    break
+            else:
+                break
+
+
+
 
     if piece == 3 or piece == 9:  # White bishop or white queen
         row, col = divmod(index, 8)
