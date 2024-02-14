@@ -1,5 +1,4 @@
 #TODO add en passant, promotion, castle.
-#fix white rook
 notation = {
     0: "a8", 1:"b8", 2:"c8", 3:"d8", 4:"e8", 5:"f8", 6:"g8", 7:"h8",
     8: "a7",9: "b7",10:"c7",11:"d7",12:"e7",13:"f7",14:"g7",15:"h7",
