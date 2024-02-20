@@ -79,7 +79,6 @@ def bestMove(chessBoard):
                 movePiece(temp_board_black, notation[i], notation[move])
                 #check if after moving that piece the black king is in check
                 if isKingChecked(temp_board_black, temp_board_black.index(-10)):
-                    print("u suck")
                     continue    #we skip this move because the black king is in check 
                                 
                 # Simulate best white response
@@ -116,15 +115,24 @@ while True:
     # we will change the board during the execution but we'll use the same array to save memory
     printBoard(initialBoard)
 
-    # variables that store the position of a piece
-    selected = input("\nSelect the square of a piece you are willing to move (only legal moves) ").lower()
+    while True:
+        
+        try:    #we do it in a try-except because the user might type a wrong move
+            # variables that store the position of a piece
+            selected = input("\nSelect the square of a piece you are willing to move (only legal moves) ").lower()
+        
+            print("you can move to : " )
+            mvs=possibleMoves(initialBoard, list(notation.keys())[list(notation.values()).index(selected)]) #list of possible moves for given piece location
+            for y in mvs:
+                print(notation[y], " " )
 
-    print("you can move to : " )
-    mvs=possibleMoves(initialBoard, list(notation.keys())[list(notation.values()).index(selected)]) #list of possible moves for given piece location
-    for y in mvs:
-        print(notation[y], " " )
+            moveTo = input("Enter where you want your piece to be placed ").lower()
+            if list(notation.keys())[list(notation.values()).index(moveTo)]  in mvs: 
+                break    #if the user selected a valid move, we can end the loop
+        except: #if the move is invalid we can just loop again 
+            print("Invalid Move")
+        
 
-    moveTo = input("Enter where you want your piece to be placed ").lower()
     movePiece(initialBoard, selected, moveTo)
     print("Now we have an evaluation of ", evaluate(initialBoard, True))
 
