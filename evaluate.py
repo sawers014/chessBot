@@ -107,7 +107,8 @@ def evaluate(board, turn):
 
         # white king
         if piece_value==10:
-           pass
+           if isKingChecked(board, index):
+                piece_value-=1
         elif piece_value==-10:  # black king
             if isKingChecked(board, index):
                 piece_value+=1
