@@ -22,6 +22,7 @@ TODO:
 """
 from printBoard import *
 from evaluate import *
+
               #A   B   C  D  E   F  G    H
 initialBoard=[-5,-2.9,-3,-9,-10,-3,-2.9,-5, #8
               -1,-1,  -1,-1, -1,-1,-1,  -1, #7
@@ -115,12 +116,17 @@ while True:
     # we will change the board during the execution but we'll use the same array to save memory
     printBoard(initialBoard)
 
+    gameEnd=False   #variaviable to stop the game
     while True:
         
         try:    #we do it in a try-except because the user might type a wrong move
             # variables that store the position of a piece
-            selected = input("\nSelect the square of a piece you are willing to move (only legal moves) ").lower()
-        
+            selected = input("\nSelect the square of a piece you are willing to move (only legal moves)(type 'stop' to end the game) ").lower()
+            
+            if selected=="stop": 
+                gameEnd=True
+                break #so the user can stop playing
+                
             print("you can move to : " )
             mvs=possibleMoves(initialBoard, list(notation.keys())[list(notation.values()).index(selected)]) #list of possible moves for given piece location
             for y in mvs:
@@ -131,7 +137,7 @@ while True:
                 break    #if the user selected a valid move, we can end the loop
         except: #if the move is invalid we can just loop again 
             print("Invalid Move")
-        
+    if gameEnd: break       
 
     movePiece(initialBoard, selected, moveTo)
     print("Now we have an evaluation of ", evaluate(initialBoard, True))
