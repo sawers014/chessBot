@@ -43,16 +43,17 @@ def isKingChecked(board, index):
     #black king in check?
     if board[index]<0:
         for x in range(64):#cycle through the index of the array
-
-            if board[x]>0: #we only want opposing color pieces.
-                moves.append(possibleMoves(board, x))
-
+            try:
+                if board[x]>0: #we only want opposing color pieces.
+                    moves.append(possibleMoves(board, x))
+            except: continue
         #white king
     else:
         for x in range(64):#cycle through the index of the array
-
-            if board[x]<0: #we only want opposing color pieces.
-                moves.append(possibleMoves(board, x))
+            try:
+                if board[x]<0: #we only want opposing color pieces.
+                    moves.append(possibleMoves(board, x))
+            except: continue
         pass
 
     if any(index in sublist for sublist in moves):
@@ -67,7 +68,7 @@ def evaluate(board, turn):
     for index in range(len(board)):  # its useful to cycle by index
         # its better to do, so we can understand what piece we are calculating.
         piece_value = board[index]
-        
+
         row, col = divmod(index, 8) #its useful to get their position in here 
 
         # pos, is a variable that contain the arrays of possible moves of a piece
@@ -92,12 +93,10 @@ def evaluate(board, turn):
         
         elif piece_value == 1:  # White pawn
 
-
-
-
-            
             if col==8:
                 piece_value += 1 # promotion
+            elif col==7:
+                piece_value += 0.6 # almost promotion
 
             if index % 8 != 0:  # Check if not on the left edge
                 if index - 9 >= 0 and board[index - 9] == 1:
@@ -112,7 +111,9 @@ def evaluate(board, turn):
 
             if col==1:
                 piece_value -= 1 # promotion
-                
+            elif col==1:
+                piece_value -= 0.6 # almost promotion    
+
             if index % 8 != 0:  # Check if not on the left edge
                 if index + 7 < 64 and board[index + 7] == -1:
                     piece_value -= 0.1   
