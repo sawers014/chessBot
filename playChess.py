@@ -1,3 +1,6 @@
+
+
+
 """
 0 represent a empty square
 1 represent a white pawn
@@ -33,6 +36,16 @@ initialBoard=[-5,-2.9,-3,-9,-10,-3,-2.9,-5, #8
                1, 1,   1, 1, 1,  1, 1,   1, #2
                5, 2.9, 3, 9, 10, 3, 2.9, 5  #1
               ]
+              #A   B   C  D  E   F  G    H
+initialBoard=[ 0, 0,   0, 0, 0,  0, 0,   0, #8
+               0, 0,   0, 0, 0,  0, 0,   1, #7
+               0, 0,   0, 0, 0,  0, 0,   0, #6
+               0, 0,   0, 0, 0,  0, 0,   0, #5
+               0, 0,   0, 0, 0,  0, 0,   0, #4
+               0, 0,   0, 0,-10, 0, -1,   0, #3
+               0, 0,   0, 0, 0,  0, 0,   -9, #2
+               0, 0,   0, 10,0,  0, 0,   0  #1
+              ]
 
 notation = {
     0: "a8", 1:"b8", 2:"c8", 3:"d8", 4:"e8", 5:"f8", 6:"g8", 7:"h8",
@@ -48,17 +61,27 @@ notation = {
 def is_king_in_check_after_move(chessBoard, start, end):
     temp_board = chessBoard.copy()
     movePiece(temp_board, notation[start], notation[end])
+
     return isKingChecked(temp_board, end)
 
 
 def movePiece(chessBoard, start, end):
+    
+
     # we use this to get the array index from the notation (e4 =>> 36)
     start = list(notation.keys())[list(notation.values()).index(start)]
     end = list(notation.keys())[list(notation.values()).index(end)]
-    
+
+    row, col = divmod(end, 8)
+
     # we put the value(the piece) of the start in the square we have chosen
     chessBoard[end] = chessBoard[start]
-    
+
+    if chessBoard[end] == 1 or chessBoard[end] == -1 and col == 1 or col ==8: #promotion
+        if chessBoard[end] == 1:
+            chessBoard[end]=9
+        else:
+            chessBoard[end]=-9
     # and then we put an empty square where we started
     chessBoard[start] = 0
 
@@ -92,10 +115,11 @@ def bestMove(chessBoard):
                             #need to add a control on checks also for white
                             temp_board_white = temp_board_black.copy()
                             movePiece(temp_board_white, notation[j], notation[white_move])
-
-                            if isKingChecked(temp_board_white, temp_board_black.index(10)):
-                                continue    #we skip this move because the white king is in check 
-                 
+                            try:
+                                if isKingChecked(temp_board_white, temp_board_black.index(10)):
+                                    continue    #we skip this move because the white king is in check 
+                            except:
+                                print("how did we get here?")        
                             white_score = evaluate(temp_board_white, True)
 
                             if white_score > best_white_score:
@@ -133,12 +157,21 @@ while True:
                 print(notation[y], " " )
 
             moveTo = input("Enter where you want your piece to be placed ").lower()
-            if list(notation.keys())[list(notation.values()).index(moveTo)]  in mvs: 
+            if list(notation.keys())[list(notation.values()).index(moveTo)]  in mvs:
+        
                 break    #if the user selected a valid move, we can end the loop
         except: #if the move is invalid we can just loop again 
             print("Invalid Move")
-    if gameEnd: break       
-
+        
+    if gameEnd: break    
+     
+    if is_king_in_check_after_move(initialBoard, list(notation.keys())[list(notation.values()).index(selected)], list(notation.keys())[list(notation.values()).index(moveTo)]): 
+                    print("you just tried to run into a check, so you LOST")
+                    break
+    else:
+        print("amogus")  
+    
+        
     movePiece(initialBoard, selected, moveTo)
     print("Now we have an evaluation of ", evaluate(initialBoard, True))
 
