@@ -33,6 +33,7 @@ notation = {
 }
 
 def isKingChecked(board, index):
+    
     #board is the chessboard, index represent the index of the king
     moves=[]
     # array that will contain all the index of the possible moves of the opposing color,
@@ -62,9 +63,12 @@ def isKingChecked(board, index):
 def evaluate(board, turn):  
     # board is the chessboard, turn is a variable that is either True(White) or False(Black)
     x = 0
+       
     for index in range(len(board)):  # its useful to cycle by index
         # its better to do, so we can understand what piece we are calculating.
         piece_value = board[index]
+        
+        row, col = divmod(index, 8) #its useful to get their position in here 
 
         # pos, is a variable that contain the arrays of possible moves of a piece
         pos = possibleMoves(board, index)
@@ -87,15 +91,28 @@ def evaluate(board, turn):
             piece_value -=  (0.05 * len(pos))
         
         elif piece_value == 1:  # White pawn
+
+
+
+
+            
+            if col==8:
+                piece_value += 1 # promotion
+
             if index % 8 != 0:  # Check if not on the left edge
                 if index - 9 >= 0 and board[index - 9] == 1:
                     piece_value += 0.1  #pawn chain
+            
                     
             if (index + 1) % 8 != 0:  # Check if not on the right edge
                 if index - 7 >= 0 and board[index - 7] == 1:
                     piece_value += 0.1
 
         elif piece_value == -1:  # Black pawn
+
+            if col==1:
+                piece_value -= 1 # promotion
+                
             if index % 8 != 0:  # Check if not on the left edge
                 if index + 7 < 64 and board[index + 7] == -1:
                     piece_value -= 0.1   
