@@ -93,10 +93,10 @@ def evaluate(board, turn):
         
         elif piece_value == 1:  # White pawn
 
-            if col==8:
-                piece_value += 1 # promotion
-            elif col==7:
-                piece_value += 0.6 # almost promotion
+            if row==1:
+                piece_value += 1.5 # promotion
+            elif row==2:
+                piece_value += 0.9 # almost promotion
 
             if index % 8 != 0:  # Check if not on the left edge
                 if index - 9 >= 0 and board[index - 9] == 1:
@@ -109,10 +109,10 @@ def evaluate(board, turn):
 
         elif piece_value == -1:  # Black pawn
 
-            if col==1:
-                piece_value -= 1 # promotion
-            elif col==1:
-                piece_value -= 0.6 # almost promotion    
+            if row==8:
+                piece_value -= 1.5 # promotion
+            elif row==7:
+                piece_value -= 0.9 # almost promotion    
 
             if index % 8 != 0:  # Check if not on the left edge
                 if index + 7 < 64 and board[index + 7] == -1:
