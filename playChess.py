@@ -1,6 +1,3 @@
-
-
-
 """
 0 represent a empty square
 1 represent a white pawn
@@ -20,8 +17,6 @@
 TODO:
 -add ability to castle;
 -add ability to ENPASSANT;
--add ability to promote.
-
 """
 from printBoard import *
 from evaluate import *
@@ -36,17 +31,6 @@ initialBoard=[-5,-2.9,-3,-9,-10,-3,-2.9,-5, #8
                1, 1,   1, 1, 1,  1, 1,   1, #2
                5, 2.9, 3, 9, 10, 3, 2.9, 5  #1
               ]
-              #A   B   C  D  E   F  G    H
-initialBoard=[ 0, 0,   0, 0, 0,  0, 0,   0, #8
-               0, 0,   0, 0, 0,  0, 0,   1, #7
-               0, 0,   0, 0, 0,  0, 0,   0, #6
-               0, 0,   0, 0, 0,  0, 0,   0, #5
-               0, 0,   0, 0, 0,  0, 0,   0, #4
-               0, 0,   0, 0,-10, 0, -1,   0, #3
-               0, 0,   0, 0, 0,  0, 0,   -9, #2
-               0, 0,   0, 10,0,  0, 0,   0  #1
-              ]
-
 notation = {
     0: "a8", 1:"b8", 2:"c8", 3:"d8", 4:"e8", 5:"f8", 6:"g8", 7:"h8",
     8: "a7",9: "b7",10:"c7",11:"d7",12:"e7",13:"f7",14:"g7",15:"h7",
@@ -77,7 +61,7 @@ def movePiece(chessBoard, start, end):
     # we put the value(the piece) of the start in the square we have chosen
     chessBoard[end] = chessBoard[start]
 
-    if chessBoard[end] == 1 or chessBoard[end] == -1 and col == 1 or col ==8: #promotion
+    if chessBoard[end] == 1 or chessBoard[end] == -1 and row == 1 or row ==8: #promotion
         if chessBoard[end] == 1:
             chessBoard[end]=9
         else:
