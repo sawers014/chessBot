@@ -61,7 +61,8 @@ def movePiece(chessBoard, start, end):
     # we put the value(the piece) of the start in the square we have chosen
     chessBoard[end] = chessBoard[start]
 
-    if chessBoard[end] == 1 or chessBoard[end] == -1 and row == 1 or row ==8: #promotion
+    if (chessBoard[end] == 1 or chessBoard[end] == -1) and row == 1 or row ==8: #promotion
+        print("maremma")
         if chessBoard[end] == 1:
             chessBoard[end]=9
         else:
