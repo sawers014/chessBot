@@ -104,7 +104,7 @@ def bestMove(chessBoard):
                                 if isKingChecked(temp_board_white, temp_board_black.index(10)):
                                     continue    #we skip this move because the white king is in check 
                             except:
-                                print("how did we get here?")        
+                                return 0        
                             white_score = evaluate(temp_board_white, True)
 
                             if white_score > best_white_score:
@@ -151,10 +151,8 @@ while True:
     if gameEnd: break    
      
     if is_king_in_check_after_move(initialBoard, list(notation.keys())[list(notation.values()).index(selected)], list(notation.keys())[list(notation.values()).index(moveTo)]): 
-                    print("you just tried to run into a check, so you LOST")
-                    break
-    else:
-        print("amogus")  
+        print("you just tried to run into a check, so you LOST")
+        break
     
         
     movePiece(initialBoard, selected, moveTo)
@@ -166,6 +164,9 @@ while True:
         print("Best move for Black:", best_move)
         movePiece(initialBoard, best_move[0], best_move[1])
         print("After black's move the evaluation is ", evaluate(initialBoard, False))
+    elif best_move==0:
+        print("you got checkmated (you idiot)")
+        break
     else:
         print("No legal moves for Black. Game over.")
         break  # or add an appropriate exit condition
